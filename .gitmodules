@@ -1,0 +1,6 @@
+[submodule "includes/tlc-transients"]
+	path = includes/tlc-transients
+	url = https://github.com/markjaquith/WP-TLC-Transients.git
+[submodule "includes/hm-core"]
+	path = includes/hm-core
+	url = https://github.com/humanmade/hm-core.git
