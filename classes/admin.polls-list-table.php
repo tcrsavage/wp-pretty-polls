@@ -94,8 +94,8 @@ class WPPP_Polls_List_Table extends WP_List_Table {
 
 		//Build row actions
 		$actions = array(
-			'edit'      => sprintf( '<a href="?page=%s&action=%s&poll=%s">Edit</a>','wppp_edit_poll','edit',$item->get_id() ),
-			'delete'    => sprintf( '<a href="#" wppp-data-id="%s">Delete</a>', $item->get_id() ),
+			'edit'      => sprintf( __( '<a href="?page=%s&action=%s&poll=%s">Edit</a>', 'WPPP' ),'wppp_edit_poll','edit',$item->get_id() ),
+			'delete'    => sprintf( __( '<a href="#" wppp-data-id="%s">Delete</a>', 'WPPP' ), $item->get_id() ),
 		);
 
 		//Return the title contents
