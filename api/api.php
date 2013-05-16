@@ -7,19 +7,18 @@ add_action( 'init', function() {
 		'request_method' 	=> 'post',
 		'request_callback' 	=> function() {
 
-			$poll = WPPP_Poll::add();
+
+			$title = ( isset( $_POST['wppp_title'] ) ) ? sanitize_text_field( stripslashes( $_POST['wppp_title'] ) ) : '';
+
+			$question = ( isset( $_POST['wppp_question'] ) ) ? wp_kses_post( stripslashes( $_POST['wppp_question'] ) ) : '';
+
+			$poll = WPPP_Poll::add( $title, $question );
 
 			if ( ! $poll ) {
 				header( "HTTP/1.0 500 Internal Server Error" );
 				echo json_encode( array( 'success' => false, 'message' => __( 'There was an unexpected error when creating the poll', 'WPPP' ) ) );
 				exit;
 			}
-
-			if ( isset( $_POST['wppp_title'] ) )
-				$poll->set_title( sanitize_text_field( stripslashes( $_POST['wppp_title'] ) ) );
-
-			if ( isset( $_POST['wppp_question'] ) )
-				$poll->set_question( wp_kses_post( stripslashes( $_POST['wppp_question'] ) ) );
 
 			//Hack to make sure undesired options are not kept
 			$poll->clear_options();
@@ -110,8 +109,7 @@ add_action( 'init', function() {
 				$vote = array( $vote );
 
 			//Make sure the vote array is clean
-			foreach( $vote as $key => $val )
-				$vote[$key] = sanitize_text_field( $val );
+			$vote = array_map( 'sanitize_text_field', (array)$_POST['selected_options'] );
 
 			$poll = WPPP_Poll::get( $wp->query_vars['p'] );
 

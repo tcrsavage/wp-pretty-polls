@@ -104,16 +104,19 @@ class WPPP_Poll  {
 	 *
 	 * @return bool|WPPP_Poll
 	 */
-	static function add() {
+	static function add( $title, $question ) {
 
 		$polls_count = get_option( 'wppp_polls_count', 0 );
 		$polls_count++;
 
+		$title = ( $title ) ? $title : 'WP Pretty Poll ' . $polls_count;
+
 		$post = array(
-			'post_title' => 'WP Pretty Poll ' . $polls_count,
-			'post_content' => '',
+			'post_title' => $title,
+			'post_content' => $question,
 			'post_status' => 'draft',
-			'post_type' => 'wppp_poll'
+			'post_type' => 'wppp_poll',
+			'post_name'	=> sanitize_title( 'WP Pretty Poll ' . $polls_count )
 		);
 
 		$post_id = wp_insert_post( $post );
