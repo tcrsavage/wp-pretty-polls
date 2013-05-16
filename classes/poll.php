@@ -106,7 +106,7 @@ class WPPP_Poll  {
 	 */
 	static function add() {
 
-		$polls_count = ( get_option( 'wppp_polls_count' ) ) ? get_option( 'wppp_polls_count' ) : 0;
+		$polls_count = get_option( 'wppp_polls_count', 0 );
 		$polls_count++;
 
 		$post = array(
