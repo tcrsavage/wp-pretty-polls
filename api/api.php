@@ -10,9 +10,9 @@ add_action( 'init', function() {
 
 			$title = ( isset( $_POST['wppp_title'] ) ) ? sanitize_text_field( stripslashes( $_POST['wppp_title'] ) ) : '';
 
-			$question = ( isset( $_POST['wppp_question'] ) ) ? wp_kses_post( stripslashes( $_POST['wppp_question'] ) ) : '';
+			$description = ( isset( $_POST['wppp_description'] ) ) ? wp_kses_post( stripslashes( $_POST['wppp_description'] ) ) : '';
 
-			$poll = WPPP_Poll::add( $title, $question );
+			$poll = WPPP_Poll::add( $title, $description );
 
 			if ( ! $poll ) {
 				header( "HTTP/1.0 500 Internal Server Error" );
@@ -62,21 +62,35 @@ add_action( 'init', function() {
 					if ( isset( $_POST['wppp_title'] ) )
 						$poll->set_title( sanitize_text_field( stripslashes( $_POST['wppp_title'] ) ) );
 
-					if ( isset( $_POST['wppp_question'] ) )
-						$poll->set_question( wp_kses_post( stripslashes( $_POST['wppp_question'] ) ) );
+					if ( isset( $_POST['wppp_description'] ) )
+						$poll->set_description( wp_kses_post( stripslashes( $_POST['wppp_description'] ) ) );
 
-					//Hack to make sure undesired options are not kept
-					$poll->clear_options();
+					//Get a clean keyed array of submitted options, where key is the id of the option and value is the option data
+					$options_request = array();
 
-					$i = 1;
+					foreach ( $_POST as $post_field => $post_field_val ) {
 
-					while ( isset( $_POST['wppp_option_' . $i] ) ) {
+						if ( strpos( $post_field, 'wppp_option_' ) === false || ! is_numeric( str_replace( 'wppp_option_', '', $post_field ) ) )
+							continue;
 
-						$poll->set_option( $i, array(
-							'title' => sanitize_text_field( stripslashes( $_POST['wppp_option_' . $i] ) )
-						) );
+						$index = (int) str_replace( 'wppp_option_', '', $post_field );
 
-						$i++;
+						$options_request[$index] = array( 'title' => sanitize_text_field( stripslashes( $post_field_val ) ) );
+					}
+
+					//Delete any unwanted options
+					foreach( $poll->get_options() as $index => $value )
+						if ( ! array_key_exists( (int) $index, $options_request ) )
+							$poll->delete_option( (int) $index );
+
+					//Update/create the options which were submitted
+					foreach ( $options_request as $index => $value ) {
+
+						if ( $poll->option_exists( $index ) )
+							$poll->set_option( $index, $value );
+
+						else
+							$poll->add_option( $value );
 					}
 
 					echo json_encode( array( 'success' => true, 'message' => __( 'Poll successfully updated', 'WPPP' ) ) );
@@ -109,7 +123,7 @@ add_action( 'init', function() {
 				$vote = array( $vote );
 
 			//Make sure the vote array is clean
-			$vote = array_map( 'sanitize_text_field', (array)$_POST['selected_options'] );
+			$vote = array_map( 'sanitize_text_field', (array) $_POST['selected_options'] );
 
 			$poll = WPPP_Poll::get( $wp->query_vars['p'] );
 

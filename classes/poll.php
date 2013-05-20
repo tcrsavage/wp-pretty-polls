@@ -104,7 +104,7 @@ class WPPP_Poll  {
 	 *
 	 * @return bool|WPPP_Poll
 	 */
-	static function add( $title, $question ) {
+	static function add( $title, $description ) {
 
 		$polls_count = get_option( 'wppp_polls_count', 0 );
 		$polls_count++;
@@ -113,7 +113,7 @@ class WPPP_Poll  {
 
 		$post = array(
 			'post_title' => $title,
-			'post_content' => $question,
+			'post_content' => $description,
 			'post_status' => 'draft',
 			'post_type' => 'wppp_poll',
 			'post_name'	=> sanitize_title( 'WP Pretty Poll ' . $polls_count )
@@ -193,8 +193,9 @@ class WPPP_Poll  {
 	 */
 	function add_option( $val ) {
 
-		$option_count = ( $this->get_meta( 'wppp_option_count' ) ) ? $this->get_meta( 'wppp_option_count' ) : 0;
-		$option_count++;
+		error_log( 'erer' );
+
+		$option_count = $this->increment_options_counter();
 
 		$options = $this->get_options();
 
@@ -237,11 +238,27 @@ class WPPP_Poll  {
 
 		$options = $this->get_options();
 
+		if ( ! array_key_exists( $id, $options ) ) {
+			$this->increment_options_counter();
+			error_log( 'nooo!' );
+		}
 		$options[$id] = $val;
 
 		$this->set_meta( 'wppp_options', $options );
 
 		return true;
+	}
+
+	/**
+	 * Check if an option exists for the given id
+	 *
+	 * @param $id
+	 */
+	function option_exists( $id ) {
+
+		$options = $this->get_options();
+
+		return array_key_exists( $id, $options );
 	}
 
 	/**
@@ -255,13 +272,27 @@ class WPPP_Poll  {
 	}
 
 	/**
-	 * Get the number of options currently available
+	 * This is used to choose unique ids for new options, it only ever increments, and ensures that new options don't inherit votes from deleted ones
 	 *
 	 * @return int
 	 */
-	function get_options_count() {
+	function get_options_counter() {
 
-		return count( $this->get_meta( 'wppp_option_count' ) );
+		return ( $this->get_meta( 'wppp_options_counter' ) ) ? $this->get_meta( 'wppp_options_counter' ) : 0;
+	}
+
+	/**
+	 * Add 1 to the current options count and return the result
+	 *
+	 * @return int
+	 */
+	function increment_options_counter() {
+
+		$count = ( $this->get_options_counter() + 1 );
+
+		$this->set_meta( 'wppp_options_counter', $count );
+
+		return $count;
 	}
 
 	/**
@@ -273,12 +304,12 @@ class WPPP_Poll  {
 	}
 
 	/**
-	 * Set the poll's question field
+	 * Set the poll's description field
 	 *
 	 * @param $val
 	 * @return bool
 	 */
-	function set_question( $val ) {
+	function set_description( $val ) {
 
 		$post = array(
 			'post_content' => $val,

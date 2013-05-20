@@ -37,10 +37,10 @@ class WPPP_Voting_Manager {
 
 	function can_vote( $option_id = null ) {
 
-		if ( ! $this->has_voted() && $this->voting_enabled() )
+		if ( ! $this->has_voted() && $this->is_voting_enabled() )
 			return true;
 
-		else if ( $this->can_vote_multiple_times() && $this->voting_enabled() )
+		else if ( $this->can_vote_multiple_times() && $this->is_voting_enabled() )
 			return true;
 
 		else if ( $this->can_vote_multiple_options() && ! $this->has_voted_for_option( $option_id ) )
@@ -50,7 +50,12 @@ class WPPP_Voting_Manager {
 
 	}
 
-	function voting_enabled() {
+	function is_voting_cookies_enabled() {
+
+		return true;
+	}
+
+	function is_voting_enabled() {
 
 		return true;
 	}
@@ -100,5 +105,30 @@ class WPPP_Voting_Manager {
 		return $vote_totals;
 	}
 
+	function get_votes_data() {
+
+		$votes_data = array();
+
+		$votes_totals = $this->get_votes_totals();
+		$poll_options = $this->poll->get_options();
+
+		foreach ( $votes_totals as $option => $val )
+			if ( ! array_key_exists( $option, $poll_options ) )
+				unset( $votes_totals[$option] );
+
+		$votes_total = array_sum( $votes_totals );
+
+		foreach ( $poll_options as $id => $val ) {
+
+			$votes_data[$id] = array(
+				'votes' => ( ! empty ( $votes_totals[$id] ) ) ? $votes_totals[$id] : 0,
+				'percentage' => ( ! empty ( $votes_totals[$id] ) ) ? ( $votes_totals[$id]/$votes_total ) * 100 : 0,
+				'title' => $val['title']
+			);
+
+		}
+
+		return $votes_data;
+	}
 
 }

@@ -1,0 +1,41 @@
+.wppp-poll {
+
+	background-color: #72a7cf;
+}
+
+.wppp-vote-tab {
+
+	padding: 3px 5px;
+	background-color: red;
+	float: left;
+}
+
+.wppp-results-tab {
+
+	padding: 3px 5px;
+	background-color: red;
+	float: left;
+}
+
+.wppp-tab-selected {
+
+	background-color: green;
+}
+
+.wppp-result-bar-container {
+
+	width: 100%;
+	margin: 5px 0;
+	padding: 0;
+}
+
+.wppp-result-bar {
+
+	height: 20px;
+	background-color: purple;
+}
+
+.clearfix {
+
+	clear: both;
+}

@@ -19,8 +19,8 @@ add_shortcode( 'wppp', 'wppp_draw_poll' );
 
 add_action( 'init', function() {
 
-	//	add_action( 'wp_footer', function() {
-	//		do_shortcode( '[wppp poll=11]' );
-	//	} );
+	add_action( 'wp_footer', function() {
+		do_shortcode( '[wppp poll=13]' );
+	} );
 
 } );

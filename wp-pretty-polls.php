@@ -47,9 +47,11 @@ add_action( 'admin_init', 'wppp_plugin_admin_init' );
  */
 function wppp_frontend_scripts() {
 
+	wp_enqueue_style( 'wppp-default-styles', WPPP_URL . '/assets/front-end.styles.css', array(), WPPP_VERSION );
+
 	wp_enqueue_script( 'jquery' );
 }
-add_action( 'wp_head', 'wppp_frontend_scripts' );
+add_action( 'wp_enqueue_scripts', 'wppp_frontend_scripts' );
 
 /**
  * Register the poll post type

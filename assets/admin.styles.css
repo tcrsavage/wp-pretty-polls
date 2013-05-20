@@ -1,0 +1,39 @@
+
+.wppp-right {
+
+	float: right;
+}
+
+.wppp-submit {
+	margin-right: 60px;
+}
+
+.wppp-single-wrap textarea {
+
+	width: 100%;
+}
+
+.wppp-single-wrap input[type="text"] {
+
+	width: 100%;
+	height: 40px;
+	font-size: 20px;
+}
+
+.wppp-icon-delete {
+
+	width: 25px;
+	height: 25px;
+	margin-left: -5px;
+	background-image: url( 'images/delete.png' );
+	background-size: 100%;
+}
+
+.wppp-icon-add {
+
+	width: 25px;
+	height: 25px;
+	margin-left: -5px;
+	background-image: url( 'images/add.png' );
+	background-size: 100%;
+}
