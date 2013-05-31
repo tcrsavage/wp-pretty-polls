@@ -4,7 +4,7 @@ jQuery( document ).ready( function( $ ) {
 	//Form submission - capture event and fire ajax request
 	jQuery( '.wppp-js-single-edit-form' ).submit( function( e ) {
 
-		var endPoint = ( WPPPPollId ) ?  WPPPApiUrl + '/' + WPPPPollId : WPPPApiUrl;
+		var endPoint = ( WPPPPollId ) ?  WPPPApiUrl + '/polls/' + WPPPPollId : WPPPApiUrl + '/polls';
 
 		e.preventDefault();
 

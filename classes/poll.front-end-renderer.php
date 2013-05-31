@@ -38,7 +38,17 @@ class WPPP_Front_End_Renderer {
 	 */
 	function draw( $args = array() ) {
 
-		hm_get_template_part( WPPP_PATH . '/templates/standard/wppp-standard.php', array( 'poll' => $this->poll, 'renderer' => $this ) );
+
+		$args = wp_parse_args( $args, array(
+
+			'width' 	=> '',
+			'height'	=> '',
+			'template'	=> 'standard'
+		) );
+
+		if ( $args['template'] == 'standard' )
+			hm_get_template_part( WPPP_PATH . '/templates/standard/wppp-standard.php', array( 'poll' => $this->poll, 'renderer' => $this, 'args' => $args ) );
+
 	}
 
 

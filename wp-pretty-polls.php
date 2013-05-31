@@ -3,23 +3,26 @@
 Plugin Name: WP Pretty Polls
 Description:
 Author: Theo Savage, HumanMade
+Version: 0.1.1
 */
 
 define( 'WPPP_ROOT_PATH', str_replace( str_replace( WP_HOME, '', WP_SITEURL ), '', ABSPATH ) );
 define( 'WPPP_PATH', dirname( __FILE__ )  );
 define( 'WPPP_URL', str_replace( WPPP_ROOT_PATH, WP_HOME . '/', WPPP_PATH ) );
-define( 'WPPP_API_URL', untrailingslashit( home_url( '/wppp/api/polls' ) ) );
-define( 'WPPP_VERSION', 0.1 );
+define( 'WPPP_API_URL', untrailingslashit( home_url( '/wppp/api' ) ) );
+define( 'WPPP_VERSION', '0.1.1' );
 
 require_once( WPPP_PATH . '/controllers/admin.common.php' );
 require_once( WPPP_PATH . '/controllers/admin.list.php' );
 require_once( WPPP_PATH . '/controllers/admin.single.php' );
+require_once( WPPP_PATH . '/controllers/admin.settings.php' );
 require_once( WPPP_PATH . '/controllers/shortcodes.php' );
 
 require_once( WPPP_PATH . '/classes/admin.polls-list-table.php' );
 require_once( WPPP_PATH . '/classes/poll.php' );
 require_once( WPPP_PATH . '/classes/poll.front-end-renderer.php' );
 require_once( WPPP_PATH . '/classes/poll.voting-manager.php' );
+require_once( WPPP_PATH . '/classes/settings.php' );
 
 require_once( WPPP_PATH . '/includes/loader.php' );
 require_once( WPPP_PATH . '/api/api.php' );

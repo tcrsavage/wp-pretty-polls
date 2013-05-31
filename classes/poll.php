@@ -388,4 +388,9 @@ class WPPP_Poll  {
 		return $this->renderer;
 	}
 
+
+	function settings() {
+
+		return WPPP_Settings::get_instance();
+	}
 }

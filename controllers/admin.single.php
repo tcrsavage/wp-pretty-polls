@@ -2,7 +2,7 @@
 
 function wppp_add_admin_single_menu_page() {
 
-	add_submenu_page( 'wppp_polls', __( 'Add New', 'WPSF' ), __( 'Add New', 'WPSF' ), 'manage_options', 'wppp_edit_poll', 'wppp_polls_admin_single_page' );
+	add_submenu_page( 'wppp_polls', __( 'Add New', 'WPPP' ), __( 'Add New', 'WPPP' ), 'manage_options', 'wppp_edit_poll', 'wppp_polls_admin_single_page' );
 }
 add_action( 'admin_menu', 'wppp_add_admin_single_menu_page', 11 );
 

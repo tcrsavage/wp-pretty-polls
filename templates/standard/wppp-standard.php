@@ -6,13 +6,18 @@
 $poll = $template_args['poll'];
 
 /* @var WPPP_Front_End_Renderer $renderer */
-$renderer = $template_args['renderer']; ?>
+$renderer = $template_args['renderer'];
+
+/* @var array $args */
+$args = $template_args['args']; ?>
 
 <script type="text/javascript">
-	jQuery( document ).ready( function() {
+	jQuery( '.wppp-poll-<?php echo $poll->get_id(); ?>' ).ready( function() {
 
-		var apiUrl = '<?php echo WPPP_API_URL; ?>';
+		if ( typeof( apiUrl ) == 'undefined' )
+			var apiUrl = '<?php echo WPPP_API_URL; ?>';
 
+		//Process a vote submission when the vote button is pressed
 		jQuery( '.wppp-poll-<?php echo $poll->get_id(); ?> .wppp-js-submit' ).click( function( e ) {
 
 			e.preventDefault();
@@ -33,6 +38,7 @@ $renderer = $template_args['renderer']; ?>
 			} );
 		} );
 
+		//Handle switching between votes and results tab
 		jQuery( '.wppp-js-vote-tab, .wppp-js-results-tab').click( function() {
 
 			self = jQuery( this );
@@ -62,7 +68,7 @@ $renderer = $template_args['renderer']; ?>
 	} );
 </script>
 
-<div class="wppp-poll wppp-poll-<?php echo $poll->get_id(); ?>">
+<div class="wppp-poll wppp-poll-<?php echo $poll->get_id(); ?>" style="<?php echo ( ! empty( $args['width'] ) ) ? 'width:' . $args['width'] . ';' : '' ?><?php echo ( ! empty( $args['height'] ) ) ? 'height:' . $args['height'] . ';' : '' ?>">
 
 	<div class='wppp-tabs wppp-js-tabs'>
 		<div class="wppp-js-vote-tab wppp-vote-tab wppp-tab-selected">Vote</div>

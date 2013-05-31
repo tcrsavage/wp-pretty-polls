@@ -3,6 +3,26 @@
 add_action( 'init', function() {
 
 	hm_add_rewrite_rule( array(
+		'regex' 			=> '^wppp/api/settings?$',
+		'request_method' 	=> 'post',
+		'request_callback' 	=> function() {
+
+			$settings = WPPP_Settings::get_instance();
+
+			if ( ! empty( $_POST['wppp_default_styles'] ) )
+				$settings->set_default_styles_enabled( true );
+			else
+				$settings->set_default_styles_enabled( false );
+
+			_e( 'Settings updated successfully', 'WPPP' );
+
+			exit;
+		}
+
+	) );
+
+
+	hm_add_rewrite_rule( array(
 		'regex' 			=> '^wppp/api/polls/?$',
 		'request_method' 	=> 'post',
 		'request_callback' 	=> function() {
@@ -16,25 +36,34 @@ add_action( 'init', function() {
 
 			if ( ! $poll ) {
 				header( "HTTP/1.0 500 Internal Server Error" );
-				echo json_encode( array( 'success' => false, 'message' => __( 'There was an unexpected error when creating the poll', 'WPPP' ) ) );
+				 _e( 'There was an unexpected error when creating the poll', 'WPPP' );
 				exit;
 			}
 
-			//Hack to make sure undesired options are not kept
-			$poll->clear_options();
+			//Get a clean keyed array of submitted options, where key is the id of the option and value is the option data
+			$options_request = array();
 
-			$i = 1;
+			foreach ( $_POST as $post_field => $post_field_val ) {
 
-			while ( isset( $_POST['wppp_option_' . $i] ) ) {
+				if ( strpos( $post_field, 'wppp_option_' ) === false || ! is_numeric( str_replace( 'wppp_option_', '', $post_field ) ) )
+					continue;
 
-				$poll->set_option( $i, array(
-					'title' => sanitize_text_field( stripslashes( $_POST['wppp_option_' . $i] ) )
-				) );
+				$index = (int) str_replace( 'wppp_option_', '', $post_field );
 
-				$i++;
+				$options_request[$index] = array( 'title' => sanitize_text_field( stripslashes( $post_field_val ) ) );
 			}
 
-			echo json_encode( array( 'success' => true, 'message' => __( 'Poll created', 'WPPP' ) ) );
+			//Update/create the options which were submitted
+			foreach ( $options_request as $index => $value ) {
+
+				if ( $poll->option_exists( $index ) )
+					$poll->set_option( $index, $value );
+
+				else
+					$poll->add_option( $value );
+			}
+
+			_e( 'Poll created', 'WPPP' );
 
 			exit;
 		}
@@ -51,7 +80,7 @@ add_action( 'init', function() {
 
 			if ( ! $poll ) {
 				header( "HTTP/1.0 400 Bad Request" );
-				echo json_encode( array( 'success' => false, 'message' => __( 'The poll requested does not exist', 'WPPP' ) ) );
+				_e( 'The poll requested does not exist', 'WPPP' );
 				exit;
 			}
 
@@ -93,7 +122,7 @@ add_action( 'init', function() {
 							$poll->add_option( $value );
 					}
 
-					echo json_encode( array( 'success' => true, 'message' => __( 'Poll successfully updated', 'WPPP' ) ) );
+					_e( 'Poll successfully updated', 'WPPP' );
 
 					break;
 
@@ -101,7 +130,7 @@ add_action( 'init', function() {
 
 					WPPP_Poll::delete( $wp->query_vars['p'] );
 
-					echo json_encode( array( 'success' => true, 'message' => __( 'Poll successfully deleted', 'WPPP' ) ) );
+					_e( 'Poll successfully deleted', 'WPPP' );
 
 					break;
 			}
@@ -129,7 +158,7 @@ add_action( 'init', function() {
 
 			if ( ! $poll || ! $vote ) {
 				header( "HTTP/1.0 400 Bad Request" );
-				echo json_encode( array( 'success' => false, 'message' => __( 'Missing vote or poll in submission', 'WPPP' ) ) );
+				_e( 'Missing vote or poll in submission', 'WPPP' );
 				exit;
 			}
 
@@ -137,11 +166,11 @@ add_action( 'init', function() {
 
 				$poll->voting()->vote( $vote );
 
-				echo json_encode( array( 'success' => true, 'message' => __( 'Vote was successful', 'WPPP' ) ) );
+				_e( 'Vote was successful', 'WPPP' );
 
 			} else {
 
-				echo json_encode( array( 'success' => false, 'message' => __( 'Sorry, you do not currently have permission to vote on this poll', 'WPPP' ) ) );
+				_e( 'Sorry, you do not currently have permission to vote on this poll', 'WPPP' );
 			}
 
 			exit;

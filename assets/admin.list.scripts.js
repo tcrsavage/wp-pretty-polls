@@ -4,7 +4,7 @@ jQuery( document ).ready( function( $ ) {
 
 		var self = jQuery( this );
 
-		var endPoint = ( self.attr( 'wppp-data-id' ) ) ?  WPPPApiUrl + '/' + self.attr( 'wppp-data-id' ) : WPPPApiUrl;
+		var endPoint = ( self.attr( 'wppp-data-id' ) ) ?  WPPPApiUrl + '/polls/' + self.attr( 'wppp-data-id' ) : WPPPApiUrl + '/polls/';
 
 		if ( confirm( 'Delete Poll, are you sure? All Data relating to this poll will be permenently removed' ) ) {
 
