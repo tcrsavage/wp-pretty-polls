@@ -39,7 +39,7 @@ function wppp_draw_poll( $args = array() ) {
 
 	$args = is_array( $args ) ? $args : array();
 
-	$poll = WPPP_Poll::get( $args['poll'] );
+	$poll = WPPP_Polls_Engine::get( $args['poll'] );
 
 	$poll->renderer()->draw( $args );
 

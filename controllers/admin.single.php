@@ -8,7 +8,7 @@ add_action( 'admin_menu', 'wppp_add_admin_single_menu_page', 11 );
 
 function wppp_polls_admin_single_page() {
 
-	$poll = ( ! empty( $_GET['poll'] ) ) ? WPPP_Poll::get( $_GET['poll'] ) : false; ?>
+	$poll = ( ! empty( $_GET['poll'] ) ) ? WPPP_Polls_Engine::get( $_GET['poll'] ) : false; ?>
 
 	<div class="wrap wppp-single-wrap">
 		<div id="icon-tools" class="icon32"><br></div>

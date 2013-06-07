@@ -2,7 +2,7 @@
 
 function wppp_jscript_variables() {
 
-	$poll = ( ! empty( $_GET['poll'] ) ) ? WPPP_Poll::get( $_GET['poll'] ) : false; ?>
+	$poll = ( ! empty( $_GET['poll'] ) ) ? WPPP_Polls_Engine::get( $_GET['poll'] ) : false; ?>
 
 	<script type="text/javascript">
 		var WPPPPollOptionCount = <?php echo ( $poll ) ? $poll->get_options_counter(): 0; ?>;

@@ -38,12 +38,13 @@ class WPPP_Front_End_Renderer {
 	 */
 	function draw( $args = array() ) {
 
-
 		$args = wp_parse_args( $args, array(
 
-			'width' 	=> '',
-			'height'	=> '',
-			'template'	=> 'standard'
+			'width' 			=> '',
+			'height'			=> '',
+			'template'			=> 'standard',
+			'show_title' 		=> true,
+			'show_description'	=> true,
 		) );
 
 		if ( $args['template'] == 'standard' )

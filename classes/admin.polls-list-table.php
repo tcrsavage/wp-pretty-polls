@@ -49,7 +49,7 @@ class WPPP_Polls_List_Table extends WP_List_Table {
 		) );
 
 		foreach ( $posts->get_posts() as $key => $postObject )
-			$this->items[] = WPPP_Poll::get_by_post_id( $postObject->ID );
+			$this->items[] = WPPP_Polls_Engine::get_by_post_id( $postObject->ID );
 	}
 
 	/**
@@ -114,7 +114,14 @@ class WPPP_Polls_List_Table extends WP_List_Table {
 	 */
 	function column_votes( $item ) {
 
-		return count( array() );
+		$totals = $item->voting()->get_votes_totals();
+
+		$total = 0;
+
+		foreach ( $totals as $segment )
+			$total += $segment;
+
+		return $total;
 	}
 
 	/**

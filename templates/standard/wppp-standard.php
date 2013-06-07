@@ -77,9 +77,11 @@ $args = $template_args['args']; ?>
 
 	<div class="clearfix"></div>
 
-	<div class="wppp-title">
-		<h3><?php echo esc_textarea( $poll->get_post()->post_title ); ?></h3>
-	</div>
+	<?php if ( $args['show_title'] ) : ?>
+		<div class="wppp-title">
+			<h3><?php echo esc_textarea( $poll->get_post()->post_title ); ?></h3>
+		</div>
+	<?php endif; ?>
 
 	<div class="wppp-description">
 		<span><?php echo esc_textarea( $poll->get_post()->post_content ); ?></span>

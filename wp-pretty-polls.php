@@ -23,6 +23,8 @@ require_once( WPPP_PATH . '/classes/poll.php' );
 require_once( WPPP_PATH . '/classes/poll.front-end-renderer.php' );
 require_once( WPPP_PATH . '/classes/poll.voting-manager.php' );
 require_once( WPPP_PATH . '/classes/settings.php' );
+require_once( WPPP_PATH . '/classes/polls-engine.php' );
+require_once( WPPP_PATH . '/classes/widget.php' );
 
 require_once( WPPP_PATH . '/includes/loader.php' );
 require_once( WPPP_PATH . '/api/api.php' );

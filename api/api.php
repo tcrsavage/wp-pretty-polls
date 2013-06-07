@@ -7,6 +7,8 @@ add_action( 'init', function() {
 		'request_method' 	=> 'post',
 		'request_callback' 	=> function() {
 
+			wppp_authenticate_admin_api_request();
+
 			$settings = WPPP_Settings::get_instance();
 
 			if ( ! empty( $_POST['wppp_default_styles'] ) )
@@ -21,18 +23,18 @@ add_action( 'init', function() {
 
 	) );
 
-
 	hm_add_rewrite_rule( array(
 		'regex' 			=> '^wppp/api/polls/?$',
 		'request_method' 	=> 'post',
 		'request_callback' 	=> function() {
 
+			wppp_authenticate_admin_api_request();
 
 			$title = ( isset( $_POST['wppp_title'] ) ) ? sanitize_text_field( stripslashes( $_POST['wppp_title'] ) ) : '';
 
 			$description = ( isset( $_POST['wppp_description'] ) ) ? wp_kses_post( stripslashes( $_POST['wppp_description'] ) ) : '';
 
-			$poll = WPPP_Poll::add( $title, $description );
+			$poll = WPPP_Polls_Engine::add( $title, $description );
 
 			if ( ! $poll ) {
 				header( "HTTP/1.0 500 Internal Server Error" );
@@ -76,7 +78,9 @@ add_action( 'init', function() {
 		'request_methods' => array( 'post', 'delete' ),
 		'request_callback' => function( WP $wp ) {
 
-			$poll = WPPP_Poll::get( $wp->query_vars['p'] );
+			wppp_authenticate_admin_api_request();
+
+			$poll = WPPP_Polls_Engine::get( $wp->query_vars['p'] );
 
 			if ( ! $poll ) {
 				header( "HTTP/1.0 400 Bad Request" );
@@ -128,7 +132,7 @@ add_action( 'init', function() {
 
 				case ( 'delete' ) :
 
-					WPPP_Poll::delete( $wp->query_vars['p'] );
+					WPPP_Polls_Engine::delete( $wp->query_vars['p'] );
 
 					_e( 'Poll successfully deleted', 'WPPP' );
 
@@ -154,7 +158,7 @@ add_action( 'init', function() {
 			//Make sure the vote array is clean
 			$vote = array_map( 'sanitize_text_field', (array) $_POST['selected_options'] );
 
-			$poll = WPPP_Poll::get( $wp->query_vars['p'] );
+			$poll = WPPP_Polls_Engine::get( $wp->query_vars['p'] );
 
 			if ( ! $poll || ! $vote ) {
 				header( "HTTP/1.0 400 Bad Request" );
@@ -169,8 +173,9 @@ add_action( 'init', function() {
 				_e( 'Vote was successful', 'WPPP' );
 
 			} else {
-
+				header( "HTTP/1.0 403 Forbidden" );
 				_e( 'Sorry, you do not currently have permission to vote on this poll', 'WPPP' );
+				exit;
 			}
 
 			exit;
@@ -178,3 +183,12 @@ add_action( 'init', function() {
 	) );
 
 } );
+
+function wppp_authenticate_admin_api_request() {
+
+	if ( ! is_user_logged_in() || ! current_user_can( 'manage_options' ) ) {
+		header( "HTTP/1.0 403 Forbidden" );
+		_e( 'Failed to authenticate user' );
+		exit;
+	}
+}
