@@ -222,6 +222,11 @@ class WPPP_Poll  {
 		return ( ! is_wp_error( $post_id ) ) ? true : false;
 	}
 
+	function get_description() {
+
+		return $this->get_post()->post_content;
+	}
+
 	/**
 	 * Set the poll's title field
 	 *
@@ -308,5 +313,23 @@ class WPPP_Poll  {
 	function settings() {
 
 		return WPPP_Settings::get_instance();
+	}
+
+	function to_array() {
+
+		return array(
+
+			'ID'			=> $this->get_id(),
+			'post_id'		=> $this->get_post_id(),
+			'title'			=> $this->get_title(),
+			'description'	=> $this->get_description(),
+			'options'		=> $this->get_options(),
+			'votes'			=> $this->voting()->to_array()
+		);
+	}
+
+	function to_json() {
+
+		return json_encode( $this->to_array() );
 	}
 }

@@ -22,7 +22,7 @@ function wppp_polls_admin_settings_page() {
 
 					<tr>
 						<td><label for="wppp_default_styles"><?php _e( 'Use Default Style Sheet', 'WPPP' ); ?></label></td>
-						<td><input type="checkbox" id="wppp_default_styles" name="wppp_default_styles" <?php checked( $settings->is_default_styles_enabled() ); ?> /></td>
+						<td><input type="checkbox" id="wppp_default_styles" name="is_default_styles_enabled" <?php checked( $settings->is_default_styles_enabled() ); ?> /></td>
 						<td></td>
 					</tr>
 

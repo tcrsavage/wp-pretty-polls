@@ -104,7 +104,7 @@ class WPPP_Polls_Engine {
 		$post_id = wp_insert_post( $post );
 
 		if ( is_wp_error( $post_id ) )
-			return false;
+			throw new Exception( $post_id->get_error_message() );
 
 		$polls_list = ( get_option(  'wppp_polls_list' ) ) ? get_option( 'wppp_polls_list' ) : array();
 		$polls_list[$polls_count] = $post_id;
@@ -112,7 +112,10 @@ class WPPP_Polls_Engine {
 		update_option( 'wppp_polls_count', $polls_count );
 		update_option( 'wppp_polls_list', $polls_list );
 
-		return self::get( $polls_count );
+		$poll = self::get( $polls_count );
+
+		if ( ! $poll )
+			throw new Exception( __( 'Error getting poll after creation.', 'WPPP' ) );
 	}
 
 	/**

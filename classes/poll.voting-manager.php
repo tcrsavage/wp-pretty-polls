@@ -54,13 +54,13 @@ class WPPP_Voting_Manager {
 	 */
 	function can_vote() {
 
-		if ( ! $this->can_vote_logged_out() && ! is_user_logged_in()  )
+		if ( ! $this->is_logged_out_voting_enabled() && ! is_user_logged_in()  )
 			return false;
 
 		if ( ! $this->has_voted() && $this->is_voting_enabled() )
 			return true;
 
-		else if ( $this->can_vote_multiple_times() && $this->is_voting_enabled() )
+		else if ( $this->is_multiple_voting_enabled() && $this->is_voting_enabled() )
 			return true;
 
 		return false;
@@ -71,9 +71,9 @@ class WPPP_Voting_Manager {
 	 *
 	 * @return bool
 	 */
-	function can_vote_logged_out() {
+	function is_logged_out_voting_enabled() {
 
-		return ( $this->get_meta( 'wppp_can_vote_logged_out' ) || $this->get_meta( 'wppp_can_vote_logged_out' ) === false ) ? true : false;
+		return ( $this->get_meta( 'wppp_can_vote_logged_out' ) || $this->get_meta( 'wppp_can_vote_logged_out' ) === '' ) ? true : false;
 	}
 
 	/**
@@ -81,7 +81,7 @@ class WPPP_Voting_Manager {
 	 *
 	 * @param $bool
 	 */
-	function set_can_vote_logged_out( $bool ) {
+	function set_is_logged_out_voting_enabled( $bool ) {
 
 		$bool = ( $bool ) ? '1' : '0';
 
@@ -95,7 +95,7 @@ class WPPP_Voting_Manager {
 	 */
 	function is_voting_enabled() {
 
-		return ( $this->get_meta( 'wppp_voting_enabled' ) || $this->get_meta( 'wppp_voting_enabled' ) === false ) ? true : false;
+		return ( $this->get_meta( 'wppp_voting_enabled' ) || $this->get_meta( 'wppp_voting_enabled' ) === '' ) ? true : false;
 	}
 
 	/**
@@ -115,9 +115,9 @@ class WPPP_Voting_Manager {
 	 *
 	 * @return bool
 	 */
-	function can_vote_multiple_times() {
+	function is_multiple_voting_enabled() {
 
-		return ( $this->get_meta( 'wppp_can_vote_multiple_times' ) || $this->get_meta( 'wppp_can_vote_multiple_times' ) === false ) ? true : false;
+		return ( $this->get_meta( 'wppp_can_vote_multiple_times' ) || $this->get_meta( 'wppp_can_vote_multiple_times' ) === '' ) ? true : false;
 	}
 
 	/**
@@ -125,7 +125,7 @@ class WPPP_Voting_Manager {
 	 *
 	 * @param $bool
 	 */
-	function set_can_vote_multiple_times( $bool ) {
+	function set_is_multiple_voting_enabled( $bool ) {
 
 		$bool = ( $bool ) ? '1' : '0';
 
@@ -238,6 +238,27 @@ class WPPP_Voting_Manager {
 	function get_meta( $key ) {
 
 		return $this->poll->get_meta( $key );
+	}
+
+	function to_array( $include_vote_list = false ) {
+
+		$a = array(
+			'is_voting_enabled'				=> $this->is_voting_enabled(),
+			'is_multiple_voting_enabled'	=> $this->is_multiple_voting_enabled(),
+			'is_logged_out_voting_enabled'	=> $this->is_logged_out_voting_enabled(),
+			'votes_totals'					=> $this->get_votes_totals(),
+			'votes_data'					=> $this->get_votes_data()
+		);
+
+		if ( $include_vote_list )
+			$a['votes_list'] = $this->get_votes_list();
+
+		return $a;
+	}
+
+	function to_json() {
+
+		return json_encode( $this->to_array() );
 	}
 
 }
