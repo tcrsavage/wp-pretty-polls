@@ -7,9 +7,10 @@ Version: 0.1.1
 */
 
 define( 'WPPP_ROOT_PATH', str_replace( str_replace( WP_HOME, '', WP_SITEURL ), '', ABSPATH ) );
-define( 'WPPP_PATH', dirname( __FILE__ )  );
+define( 'WPPP_PATH', dirname( __FILE__ ) . '/' );
+
 define( 'WPPP_URL', str_replace( WPPP_ROOT_PATH, WP_HOME . '/', WPPP_PATH ) );
-define( 'WPPP_API_URL', untrailingslashit( home_url( '/wppp/api' ) ) );
+define( 'WPPP_API_URL', untrailingslashit( home_url( '/wppp/api/' ) ) );
 define( 'WPPP_VERSION', '0.1.1' );
 
 require_once( WPPP_PATH . '/controllers/admin.common.php' );
@@ -54,6 +55,9 @@ function wppp_frontend_scripts() {
 
 	if ( WPPP_Settings::get_instance()->is_default_styles_enabled() )
 		wp_enqueue_style( 'wppp-default-styles', WPPP_URL . '/assets/front-end.styles.css', array(), WPPP_VERSION );
+
+	if ( WPPP_Settings::get_instance()->is_default_scripts_enabled() )
+		wp_enqueue_script( 'wppp-default-scripts', WPPP_URL . '/assets/front-end.scripts.js', array(), WPPP_VERSION );
 
 	wp_enqueue_script( 'jquery' );
 }
