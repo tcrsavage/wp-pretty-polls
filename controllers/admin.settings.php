@@ -28,7 +28,11 @@ function wppp_polls_admin_settings_page() {
 
 					<tr>
 						<td></td>
-						<td><input type="submit" class="button-primary wppp-right wppp-submit" value="Submit" /></td>
+
+						<td>
+							<span class="wppp-right wppp-ajax-status wppp-js-ajax-status" ></span>
+							<input type="submit" class="button-primary wppp-right wppp-submit" value="Submit" />
+						</td>
 					</tr>
 
 				</tbody>

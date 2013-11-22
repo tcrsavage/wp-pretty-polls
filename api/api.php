@@ -42,6 +42,9 @@ add_action( 'init', function() {
 				exit;
 			}
 
+			$poll->voting()->set_is_voting_enabled( ! empty( $_POST['wppp_allow_voting'] ) );
+			$poll->voting()->set_can_vote_multiple_times( ! empty( $_POST['wppp_allow_multiple_votes'] ) );
+
 			//Get a clean keyed array of submitted options, where key is the id of the option and value is the option data
 			$options_request = array();
 
@@ -97,6 +100,9 @@ add_action( 'init', function() {
 
 					if ( isset( $_POST['wppp_description'] ) )
 						$poll->set_description( wp_kses_post( stripslashes( $_POST['wppp_description'] ) ) );
+
+					$poll->voting()->set_is_voting_enabled( ! empty( $_POST['wppp_allow_voting'] ) );
+					$poll->voting()->set_can_vote_multiple_times( ! empty( $_POST['wppp_allow_multiple_votes'] ) );
 
 					//Get a clean keyed array of submitted options, where key is the id of the option and value is the option data
 					$options_request = array();

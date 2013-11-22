@@ -1,16 +1,47 @@
 <?php
 
+/**
+ * Management class for getting, creating and deleting polls
+ *
+ * Class WPPP_Polls_Engine
+ */
 class WPPP_Polls_Engine {
 
+	/**
+	 * @var
+	 */
 	static $poll_instances;
 
+	/**
+	 * Get a array of all current poll ids
+	 *
+	 * @return array
+	 */
 	static function get_ids() {
 
-		return get_option( 'wppp_polls_list' );
+		return get_option( 'wppp_polls_list', array() );
 	}
 
 	/**
-	 * Get an instance of this class
+	 * Get a array of all poll objects
+	 *
+	 * @return WPPP_Poll[]
+	 */
+	static function get_polls() {
+
+		$polls = array();
+
+		foreach ( self::get_ids() as $id ) {
+
+			if ( self::get_by_post_id( $id ) )
+				$polls[] = self::get_by_post_id( $id );
+		}
+
+		return $polls;
+	}
+
+	/**
+	 * Get an instance of a given poll
 	 *
 	 * @param $poll_id
 	 * @return bool | WPPP_Poll
@@ -34,7 +65,7 @@ class WPPP_Polls_Engine {
 	}
 
 	/**
-	 * Get an instance of this class
+	 * Get an instance of a poll for a given post id
 	 *
 	 * @param $poll_post_id
 	 * @return bool|WPPP_Poll

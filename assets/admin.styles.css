@@ -5,7 +5,21 @@
 }
 
 .wppp-submit {
-	margin-right: 60px;
+	margin-right: 10px;
+}
+
+.wppp-ajax-status {
+
+	display: block;
+	width: 23px;
+	height: 23px;
+	float: right;
+}
+
+.wppp-ajax-status.wppp-ajax-loading {
+
+	background: url( 'images/ajax.gif' ) no-repeat top left;
+	background-size: 100%;
 }
 
 .wppp-single-wrap textarea {
@@ -36,4 +50,8 @@
 	margin-left: -5px;
 	background-image: url( 'images/add.png' );
 	background-size: 100%;
+}
+
+.wppp-shortcode-insert-form th {
+	padding-right: 20px;
 }

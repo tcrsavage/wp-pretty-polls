@@ -6,6 +6,8 @@
 class WPPP_Settings {
 
 	/**
+	 * Store the class instance statically
+	 *
 	 * @var
 	 */
 	static $instance;

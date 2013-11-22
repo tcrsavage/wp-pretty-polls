@@ -5,19 +5,22 @@
 /* @var WPPP_Poll $poll */
 $poll = $template_args['poll'];
 
-/* @var WPPP_Front_End_Renderer $renderer */
+/* @var WPPP_Renderer $renderer */
 $renderer = $template_args['renderer']; ?>
 
-<div>
+<div class="wppp-vote-wrap">
+	<form class="js-wppp-vote">
+		<ul class="wppp-options">
+			<?php foreach ( $poll->get_options() as $key => $val ) : ?>
+				<li class="wppp-option-container">
+					<input id="wppp-vote-option-<?php echo $poll->get_id() . '-' . $key; ?>" type="radio" class="wppp-option wppp-js-option" name="selected_options" value="<?php echo esc_attr( $key ); ?>" />
+					<label for="wppp-vote-option-<?php echo $poll->get_id() . '-' . $key; ?>"><?php echo esc_textarea( $val['title'] ); ?></label>
+				</li>
+			<?php endforeach; ?>
+		</ul>
 
-	<ul class="wppp-options">
-		<?php foreach ( $poll->get_options() as $key => $val ) : ?>
-			<li class="wppp-option-container">
-				<label for="wppp-vote-option-<?php echo $poll->get_id() . '-' . $key; ?>"><?php echo esc_textarea( $val['title'] ); ?></label>
-				<input id="wppp-vote-option-<?php echo $poll->get_id() . '-' . $key; ?>" type="radio" class="wppp-option wppp-js-option" name="wppp_vote" value="<?php echo esc_attr( $key ); ?>" />
-			</li>
-		<?php endforeach; ?>
-	</ul>
+		<input type="submit" class="wppp-js-submit" value="Vote" />
+	</form>
 
-	<button class="wppp-js-submit">Vote</button>
+	<div class="wppp-js-results-tab wppp-results-tab">Results</div>
 </div>

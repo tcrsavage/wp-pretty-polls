@@ -20,7 +20,7 @@ require_once( WPPP_PATH . '/controllers/shortcodes.php' );
 
 require_once( WPPP_PATH . '/classes/admin.polls-list-table.php' );
 require_once( WPPP_PATH . '/classes/poll.php' );
-require_once( WPPP_PATH . '/classes/poll.front-end-renderer.php' );
+require_once( WPPP_PATH . '/classes/poll.renderer.php' );
 require_once( WPPP_PATH . '/classes/poll.voting-manager.php' );
 require_once( WPPP_PATH . '/classes/settings.php' );
 require_once( WPPP_PATH . '/classes/polls-engine.php' );
@@ -52,7 +52,8 @@ add_action( 'admin_init', 'wppp_plugin_admin_init' );
  */
 function wppp_frontend_scripts() {
 
-	wp_enqueue_style( 'wppp-default-styles', WPPP_URL . '/assets/front-end.styles.css', array(), WPPP_VERSION );
+	if ( WPPP_Settings::get_instance()->is_default_styles_enabled() )
+		wp_enqueue_style( 'wppp-default-styles', WPPP_URL . '/assets/front-end.styles.css', array(), WPPP_VERSION );
 
 	wp_enqueue_script( 'jquery' );
 }

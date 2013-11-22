@@ -36,7 +36,7 @@ class WPPP_Poll  {
 	/**
 	 * The frontend rendering class
 	 *
-	 * @var WPPP_Front_End_Renderer
+	 * @var WPPP_Renderer
 	 */
 	var $renderer;
 
@@ -57,8 +57,6 @@ class WPPP_Poll  {
 
 		$this->post_object = get_post( $this->post_id );
 	}
-
-
 
 	/**
 	 * Get the post object of the current poll instance
@@ -143,8 +141,8 @@ class WPPP_Poll  {
 
 		if ( ! array_key_exists( $id, $options ) ) {
 			$this->increment_options_counter();
-			error_log( 'nooo!' );
 		}
+
 		$options[$id] = $val;
 
 		$this->set_meta( 'wppp_options', $options );
@@ -242,6 +240,11 @@ class WPPP_Poll  {
 		return ( ! is_wp_error( $post_id ) ) ? true : false;
 	}
 
+	/**
+	 * Get the poll title
+	 *
+	 * @return mixed
+	 */
 	function get_title() {
 
 		return $this->get_post()->post_title;
@@ -286,17 +289,22 @@ class WPPP_Poll  {
 	/**
 	 * Get an instance of the poll's rendering class
 	 *
-	 * @return WPPP_Front_End_Renderer
+	 * @return WPPP_Renderer
 	 */
 	function renderer() {
 
 		if ( empty( $this->renderer ) )
-			$this->renderer = new WPPP_Front_End_Renderer( $this );
+			$this->renderer = new WPPP_Renderer( $this );
 
 		return $this->renderer;
 	}
 
 
+	/**
+	 * Get and instance of the WPPP settings manager
+	 *
+	 * @return WPPP_Settings
+	 */
 	function settings() {
 
 		return WPPP_Settings::get_instance();

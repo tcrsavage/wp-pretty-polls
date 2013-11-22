@@ -1,10 +1,8 @@
-
 <?php
-
 /**
- * Class WPPP_Front_End_Renderer
+ * Class WPPP_Renderer
  */
-class WPPP_Front_End_Renderer {
+class WPPP_Renderer {
 
 	/**
 	 * The poll used to instantiate the class
@@ -22,6 +20,11 @@ class WPPP_Front_End_Renderer {
 	}
 
 
+	/**
+	 * Output buffer the poll rendered html
+	 *
+	 * @return string
+	 */
 	function get_draw() {
 
 		ob_start() ;

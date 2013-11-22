@@ -10,10 +10,14 @@ jQuery( document ).ready( function( $ ) {
 
 		var theForm = jQuery( this );
 
+		jQuery( '.wppp-js-ajax-status' ).addClass( 'wppp-ajax-loading' );
+
 		jQuery.ajax( endPoint, {
 			type 	: 'post',
 			data	: theForm.serialize(),
 			success	: function( data ) {
+
+				jQuery( '.wppp-js-ajax-status' ).removeClass( 'wppp-ajax-loading' );
 			}
 		} );
 	} );
@@ -24,11 +28,8 @@ jQuery( document ).ready( function( $ ) {
 		jQuery( this ).closest( 'tr' ).remove();
 	} );
 
-
 	//Add an option via mouse click
 	jQuery( '.wppp-js-add-option' ).click( function() {
-		console.log( 'added' );
-
 		WPPPNewOption();
 	} );
 
@@ -51,16 +52,16 @@ jQuery( document ).ready( function( $ ) {
 
 		if ( simple.is( ':visible' ) ) {
 
-			simple.toggle( 'slide', function() {
-				advanced.toggle( 'slide', { direction: 'right' } );
+			simple.toggle( 0, function() {
+				advanced.toggle();
 			} );
 
 			self.html( self.attr( 'wppp-data-simple-val' ) );
 
 		} else {
 
-			advanced.toggle( 'slide', { direction: 'right' }, function() {
-				simple.toggle( 'slide' );
+			advanced.toggle( 0, function() {
+				simple.toggle();
 			} );
 
 			self.html( self.attr( 'wppp-data-advanced-val' ) );

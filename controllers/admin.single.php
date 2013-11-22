@@ -67,12 +67,6 @@ function wppp_polls_admin_single_page() {
 					<td></td>
 				</tr>
 
-				<tr>
-					<td><label for="wppp_save_vote_data_cookies">Save Vote data cookies</label></td>
-					<td><input type="checkbox" id="wppp_save_vote_data_cookies" name="wppp_save_vote_data_cookies" value="1" <?php checked( $poll && $poll->voting()->is_voting_cookies_enabled() ); ?> /></td>
-					<td></td>
-				</tr>
-
 				</tbody>
 			</table>
 
@@ -80,18 +74,22 @@ function wppp_polls_admin_single_page() {
 				<tbody>
 					<tr>
 						<td>
-							<button class="button-secondary wppp-js-advanced-settings-toggle" wppp-data-advanced-val="<?php _e( 'Advanced settings', 'WPPP' );?>" wppp-data-simple-val="<?php _e( 'Simple settings', 'WPPP' );?>">
+							<button type="button" class="button-secondary wppp-js-advanced-settings-toggle" wppp-data-advanced-val="<?php _e( 'Advanced settings', 'WPPP' );?>" wppp-data-simple-val="<?php _e( 'Simple settings', 'WPPP' );?>">
 								<?php _e( 'Advanced settings', 'WPPP' ); ?>
-							</button></td>
+							</button>
+						</td>
 						<td></td>
-						<td><input type="submit" class="button-primary wppp-right wppp-submit" value="Submit" /></td>
+						<td>
+							<span class="wppp-right wppp-ajax-status wppp-js-ajax-status" ></span>
+							<input type="submit" class="button-primary wppp-right wppp-submit" value="Submit" />
+						</td>
 					</tr>
 				</tbody>
 			</table>
 
 		</form>
 	</div>
-<?php
+	<?php
 }
 
 function wppp_admin_scripts_for_single_poll() {

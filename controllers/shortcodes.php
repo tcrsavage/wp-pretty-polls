@@ -1,37 +1,76 @@
 <?php
 
-/**
- * Adds Insert Bar above Page Edit
- */
-function wppp_shortcode_inserter() {
+function wppp_shortcode_inserter_btn( $context ) {
 
-	$menu_ids = HT_Food_Menu::getMenuIds();
+	$img = WPPP_URL . '/assets/images/icon.png';
+	$container_id = 'wppp-insert-shortcode-container';
+	$title = 'Insert poll';
+
+	$context .= "<a class='thickbox' title='{$title}' href='#TB_inline?width=400&inlineId={$container_id}'><img src='{$img}' /></a>";
+
+	return $context;
+}
+add_action('media_buttons_context', 'wppp_shortcode_inserter_btn');
+
+function wppp_shortcode_modal() {
 	?>
-	<div id="ht-above-editor-insert-area">
+	<div id="wppp-insert-shortcode-container" style="display:none;">
+		<h2>Insert Poll</h2>
 
-		<strong><?php _e( 'Insert' ,'wppp' ) ?>:</strong>
+		<form id="wppp-js-shortcode-insert-form" class="describe wppp-shortcode-insert-form" method="post" action="">
+			<table>
+				<tbody>
+				<tr>
+					<th>
+						<label for="wppp_poll_id">Poll</label>
+					</th>
+					<td>
+						<select id="wppp_poll_id" name="poll">
+							<option value="0">Select poll</option>
+							<?php foreach ( WPPP_Polls_Engine::get_polls() as $poll ) : ?>
+								<option value="<?php echo $poll->get_id();?>"><?php echo $poll->get_title(); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<label for="wppp_show_title">Show title</label>
+					</th>
+					<td>
+						<input id="wppp_show_title" type="checkbox" name="show_title" value="1" />
+					</td>
+				</tr>
+				</tbody>
+			</table>
 
-		<a class="wppp-js-open-shortcode-modal wppp-shortcode-modal-button" href="#"><img src="<?php echo WPPP_URL . '/assets/images/food_20.png'?>"/><span>Poll</span></a>
+			<input type="submit" class="alignright" value="Insert poll" />
 
-		<div id="menu-menu-id-wrap" class="hidden">
-			<select id="menu-menu-id">
-				<option value="0"><?php _e( 'Select Poll', 'wppp' ) ?></option>
-
-				<?php foreach ( $menu_ids as $menu_id ) : ?>
-					<option value="<?php echo $menu_id ?>"><?php echo HT_Food_Menu::getMenu( $menu_id )->getTitle(); ?></option>
-				<?php endforeach; ?>
-
-			</select>
-		</div>
-
-		<?php do_action( 'wppp_above_editor_insert_items' ) ?>
+		</form>
 	</div>
 <?php
 }
-add_action( 'edit_page_form', 'wppp_shortcode_inserter' );
+add_action('admin_footer', 'wppp_shortcode_modal' );
+
+function wppp_shortcode_inserter_js() {
+
+	?>
+	<script type="text/javascript">
+        jQuery( document ).ready (function() {
+
+			jQuery( "#wppp-shortcode-insert-form" ).submit( function( e ) {
+				e.preventDefault();
+           		send_to_editor( '[wppp ' + encodeURI( jQuery( this ).serialize() ).replace( /&/, ' ' ) + ' ]' );
+           		return false;
+		   });
+        });
+	</script>
+	<?php
+}
+add_action('admin_head', 'wppp_shortcode_inserter_js');
 
 /**
- * Testing - Draw a poll
+ * Draw a poll for the given args
  *
  * @param array $args
  */
@@ -41,16 +80,9 @@ function wppp_draw_poll( $args = array() ) {
 
 	$poll = WPPP_Polls_Engine::get( $args['poll'] );
 
-	$poll->renderer()->draw( $args );
+	if ( ! $poll )
+		return;
 
-	exit;
+	$poll->renderer()->draw( $args );
 }
 add_shortcode( 'wppp', 'wppp_draw_poll' );
-
-add_action( 'init', function() {
-
-	add_action( 'wp_footer', function() {
-		do_shortcode( '[wppp poll=13]' );
-	} );
-
-} );

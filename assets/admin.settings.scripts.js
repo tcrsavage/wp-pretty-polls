@@ -9,15 +9,16 @@ jQuery( document ).ready( function() {
 
 		var theForm = jQuery( this );
 
+		jQuery( '.wppp-js-ajax-status' ).addClass( 'wppp-ajax-loading' );
+
 		jQuery.ajax( endPoint, {
 			type 	: 'post',
 			data	: theForm.serialize(),
 			success	: function( data ) {
 
-				console.log( data );
+				jQuery( '.wppp-js-ajax-status' ).removeClass( 'wppp-ajax-loading' );
 			}
 		} );
 	} );
-
 
 } );
