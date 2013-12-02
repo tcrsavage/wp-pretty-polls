@@ -43,7 +43,7 @@
 
 			} catch ( Exception $e ) {
 
-				wppp_api_respond( 400, $e->getMessage() );
+				wppp_api_respond_failure( 400, $e->getMessage() );
 			}
 
 			wppp_api_respond( 201, $poll->to_json() );
@@ -105,7 +105,7 @@
 
 					} catch (Exception $e ) {
 
-						wppp_api_respond( 400, $e->getMessage() );
+						wppp_api_respond_failure( 400, $e->getMessage() );
 					}
 
 					wppp_api_respond( 201, $poll->to_json() );
@@ -119,7 +119,7 @@
 						$poll = new WPPP_Poll( $wp->query_vars['p'] );
 
 					} catch ( Exception $e ) {
-						wppp_api_respond( 400, $e->getMessage() );
+						wppp_api_respond_failure( 400, $e->getMessage() );
 					}
 
 					wppp_api_respond( 200, $poll->to_json() );
@@ -135,7 +135,7 @@
 						WPPP_Polls_Engine::delete( $wp->query_vars['p'] );
 
 					} catch( Exception $e ) {
-						wppp_api_respond( 400, $e->getMessage() );
+						wppp_api_respond_failure( 400, $e->getMessage() );
 					}
 
 					wppp_api_respond( 204 );

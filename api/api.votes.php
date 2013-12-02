@@ -36,7 +36,7 @@ add_action( 'init', function() {
 						$poll->voting()->vote( $vote );
 
 					} catch ( Exception $e ) {
-						wppp_api_respond( 400, $e->getMessage() );
+						wppp_api_respond_failure( 400, $e->getMessage() );
 					}
 
 					break ;
@@ -47,7 +47,7 @@ add_action( 'init', function() {
 
 						$poll = new WPPP_Poll( $wp->query_vars['p'] );
 					} catch ( Exception $e ) {
-						wppp_api_respond( 400, $e->getMessage() );
+						wppp_api_respond_failure( 400, $e->getMessage() );
 					}
 
 					break;
