@@ -2,7 +2,7 @@
 
 function wppp_add_admin_list_menu_page() {
 
-	add_menu_page( __( 'Edit Polls', 'WPPP' ), __( 'Polls', 'WPPP' ), 'manage_options', 'wppp_polls', 'wppp_polls_admin_list_table' );
+	add_menu_page( __( 'Edit Polls', 'WPPP' ), __( 'Polls', 'WPPP' ), 'manage_options', 'wppp_polls', 'wppp_polls_admin_list_table', WPPP_URL . 'assets/images/icon.png', 48 );
 }
 add_action( 'admin_menu', 'wppp_add_admin_list_menu_page', 10 );
 

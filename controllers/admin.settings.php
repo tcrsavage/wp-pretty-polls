@@ -2,7 +2,7 @@
 
 function wppp_add_admin_settings_menu_page() {
 
-	add_submenu_page( 'wppp_polls', __( 'Settings', 'WPPP' ), __( 'Settings', 'WPPP' ), 'manage_options', 'wppp_settings', 'wppp_polls_admin_settings_page' );
+	add_submenu_page( 'options-general.php', __( 'Polls', 'WPPP' ), __( 'Polls', 'WPPP' ), 'manage_options', 'wppp_settings', 'wppp_polls_admin_settings_page' );
 }
 add_action( 'admin_menu', 'wppp_add_admin_settings_menu_page', 11 );
 
