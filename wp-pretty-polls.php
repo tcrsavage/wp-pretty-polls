@@ -57,9 +57,7 @@ function wppp_frontend_scripts() {
 		wp_enqueue_style( 'wppp-default-styles', WPPP_URL . '/assets/front-end.styles.css', array(), WPPP_VERSION );
 
 	if ( WPPP_Settings::get_instance()->is_default_scripts_enabled() )
-		wp_enqueue_script( 'wppp-default-scripts', WPPP_URL . '/assets/front-end.scripts.js', array(), WPPP_VERSION );
-
-	wp_enqueue_script( 'jquery' );
+		wp_enqueue_script( 'wppp-default-scripts', WPPP_URL . '/assets/front-end.scripts.js', array( 'jquery' ), WPPP_VERSION );
 }
 add_action( 'wp_enqueue_scripts', 'wppp_frontend_scripts' );
 
