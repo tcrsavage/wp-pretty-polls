@@ -6,10 +6,8 @@ Author: Theo Savage, HumanMade
 Version: 0.1.1
 */
 
-define( 'WPPP_ROOT_PATH', str_replace( str_replace( WP_HOME, '', WP_SITEURL ), '', ABSPATH ) );
 define( 'WPPP_PATH', dirname( __FILE__ ) . '/' );
-
-define( 'WPPP_URL', str_replace( WPPP_ROOT_PATH, WP_HOME . '/', WPPP_PATH ) );
+define( 'WPPP_URL',  plugins_url( '/' , __FILE__  ) );
 define( 'WPPP_API_URL', untrailingslashit( home_url( '/wppp/api/' ) ) );
 define( 'WPPP_VERSION', '0.1.1' );
 
